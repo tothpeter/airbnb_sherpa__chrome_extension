@@ -17,12 +17,35 @@ const observer = new MutationObserver((mutations) => {
  });
 
 function processListing(listing) {
-  addHideButton(listing);
+  addButtons(listing);
 }
 
-function addHideButton(listing) {
+function addButtons(listing) {
   const hideButton = document.createElement('button');
   hideButton.textContent = 'Hide';
+  hideButton.classList.add('hide-button');
+
+  hideButton.addEventListener('click', () => {
+    hideListing(listing);
+  });
 
   listing.appendChild(hideButton);
+
+  const showButton = document.createElement('button');
+  showButton.textContent = 'Show';
+  showButton.classList.add('show-button');
+
+  showButton.addEventListener('click', () => {
+    showListing(listing);
+  });
+
+  listing.appendChild(showButton);
+}
+
+function hideListing(listing) {
+  listing.classList.add('hidden-listing');
+}
+
+function showListing(listing) {
+  listing.classList.remove('hidden-listing');
 }

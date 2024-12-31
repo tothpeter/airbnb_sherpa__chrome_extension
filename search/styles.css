@@ -1,0 +1,11 @@
+.show-button {
+  display: none;
+}
+
+.hidden-listing .show-button {
+  display: block;
+}
+
+.hidden-listing .hide-button {
+  display: none;
+}

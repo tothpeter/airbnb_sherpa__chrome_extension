@@ -6,7 +6,8 @@
   "content_scripts": [
     {
       "matches": ["https://www.airbnb.com/s/*"],
-      "js": ["search/content.js"]
+      "js": ["search/content.js"],
+      "css": ["search/styles.css"]
     }
   ]
 }
