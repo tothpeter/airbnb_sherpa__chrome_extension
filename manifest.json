@@ -3,6 +3,7 @@
   "name": "Airbnb Listing Hider",
   "version": "1.0",
   "description": "Hide or unhide listings on Airbnb search and wishlists pages",
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": ["https://www.airbnb.com/s/*"],
