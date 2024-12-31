@@ -3,18 +3,21 @@ const observer = new MutationObserver((mutations) => {
   for (const mutation of mutations) {
     const addedElements = Array.from(mutation.addedNodes);
 
-    addedElements.forEach(element => {
-      if (element.getAttribute && element.getAttribute('itemprop') === 'itemListElement') {
+    addedElements.forEach((element) => {
+      if (
+        element.getAttribute &&
+        element.getAttribute('itemprop') === 'itemListElement'
+      ) {
         processListing(element);
       }
     });
   }
- });
+});
 
- observer.observe(document.body, {
+observer.observe(document.body, {
   childList: true,
-  subtree: true
- });
+  subtree: true,
+});
 
 function processListing(listing) {
   addButtons(listing);
