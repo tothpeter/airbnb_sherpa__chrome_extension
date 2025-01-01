@@ -6,7 +6,12 @@
   "permissions": ["storage"],
   "content_scripts": [
     {
-      "matches": ["https://www.airbnb.com/s/*"],
+      "matches": [
+        "*://*/*"
+      ],
+      "include_globs": [
+        "*://*.airbnb.*/*"
+      ],
       "js": ["search/content.js"],
       "css": ["search/styles.css"]
     }
