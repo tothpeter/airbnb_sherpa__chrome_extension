@@ -1,28 +1,4 @@
-// Listens for new search results and processes new listings
-const observer = new MutationObserver((mutations) => {
-  for (const mutation of mutations) {
-    mutation.addedNodes.forEach((element) => {
-      if (
-        element.getAttribute &&
-        element.getAttribute('itemprop') === 'itemListElement'
-      ) {
-        processListing(element);
-      }
-    });
-  }
-});
-
-observer.observe(document.body, {
-  childList: true,
-  subtree: true,
-});
-
-let hiddenListingIds;
-
-chrome.storage.local.get(['hiddenListingIds'], (result) => {
-  hiddenListingIds = result.hiddenListingIds || {};
-});
-
+// =================================== Functions ===============================
 function processListing(listing) {
   hideOrShowListing(listing);
   addButtons(listing);
@@ -90,3 +66,33 @@ function removeHiddenListingId(listingId) {
   delete hiddenListingIds[listingId];
   chrome.storage.local.set({ hiddenListingIds });
 }
+
+function boot() {
+  // Listen for new search results and processes new listings
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach((element) => {
+        if (
+          element.getAttribute &&
+          element.getAttribute('itemprop') === 'itemListElement'
+        ) {
+          processListing(element);
+        }
+      });
+    }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+}
+
+// =================================== Boot ====================================
+
+let hiddenListingIds;
+
+chrome.storage.local.get(['hiddenListingIds'], (result) => {
+  hiddenListingIds = result.hiddenListingIds || {};
+  boot();
+});
