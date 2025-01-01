@@ -7,7 +7,7 @@
 }
 
 [itemprop='itemListElement'].hidden-listing > div:first-of-type::after {
-  content: "";
+  content: '';
   display: block;
   background-color: white;
   opacity: 0.7;
