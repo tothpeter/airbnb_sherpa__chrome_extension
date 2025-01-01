@@ -1,9 +1,7 @@
 // Listens for new search results and processes new listings
 const observer = new MutationObserver((mutations) => {
   for (const mutation of mutations) {
-    const addedElements = Array.from(mutation.addedNodes);
-
-    addedElements.forEach((element) => {
+    mutation.addedNodes.forEach((element) => {
       if (
         element.getAttribute &&
         element.getAttribute('itemprop') === 'itemListElement'
