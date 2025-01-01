@@ -1,5 +1,8 @@
 // =================================== Functions ===============================
 function processListing(listing) {
+  // Skip if the listing was already processed
+  if (listing.querySelector('.hide-button')) return;
+
   hideOrShowListing(listing);
   addButtons(listing);
 }
@@ -68,6 +71,10 @@ function removeHiddenListingId(listingId) {
 }
 
 function boot() {
+  document
+    .querySelectorAll('[itemprop="itemListElement"]')
+    .forEach(processListing);
+
   // Listen for new search results and processes new listings
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
