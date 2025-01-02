@@ -6,7 +6,7 @@
   position: relative;
 }
 
-[itemprop='itemListElement'].hidden-listing > div:first-of-type::after {
+[itemprop='itemListElement'].ignored-listing > div:first-of-type::after {
   content: '';
   display: block;
   background-color: white;
@@ -18,10 +18,10 @@
   left: 0;
 }
 
-.hidden-listing .show-button {
+.ignored-listing .show-button {
   display: block !important;
 }
 
-.hidden-listing .hide-button {
+.ignored-listing .ignore-button {
   display: none !important;
 }
