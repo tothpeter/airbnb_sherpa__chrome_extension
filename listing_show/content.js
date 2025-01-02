@@ -52,7 +52,7 @@ class ListingShowPage {
       this.shareButtonContainer.getAttribute('class')
     );
 
-    if (hiddenListingIds[this.listingId]) {
+    if (IgnoredListings.includes(this.listingId)) {
       this.container.classList.add('hidden-listing');
     }
   }
@@ -91,11 +91,11 @@ class ListingShowPage {
 
   hideListing() {
     this.container.classList.add('hidden-listing');
-    storeHiddenListingId(this.listingId);
+    IgnoredListings.add(this.listingId);
   }
 
   showListing() {
     this.container.classList.remove('hidden-listing');
-    removeHiddenListingId(this.listingId);
+    IgnoredListings.remove(this.listingId);
   }
 }

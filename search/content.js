@@ -10,7 +10,7 @@ function processListing(listing) {
 function hideOrShowListing(listing) {
   const listingId = getListingIdFrom(listing);
 
-  if (hiddenListingIds[listingId]) {
+  if (IgnoredListings.includes(listingId)) {
     listing.classList.add('hidden-listing');
   }
 }
@@ -42,7 +42,7 @@ function hideListing(listing) {
 
   const listingId = getListingIdFrom(listing);
 
-  storeHiddenListingId(listingId);
+  IgnoredListings.add(listingId);
 }
 
 function showListing(listing) {
@@ -50,7 +50,7 @@ function showListing(listing) {
 
   const listingId = getListingIdFrom(listing);
 
-  removeHiddenListingId(listingId);
+  IgnoredListings.remove(listingId);
 }
 
 function getListingIdFrom(listing) {
@@ -58,16 +58,6 @@ function getListingIdFrom(listing) {
   // the URL is like "www.airbnb.com/rooms/846234228646563727?adults..."
   const url = urlElement.getAttribute('content');
   return url.match(/\/rooms\/(\d+)/)?.[1];
-}
-
-function storeHiddenListingId(listingId) {
-  hiddenListingIds[listingId] = true;
-  chrome.storage.local.set({ hiddenListingIds });
-}
-
-function removeHiddenListingId(listingId) {
-  delete hiddenListingIds[listingId];
-  chrome.storage.local.set({ hiddenListingIds });
 }
 
 function boot() {
@@ -94,13 +84,3 @@ function boot() {
     subtree: true,
   });
 }
-
-// =================================== Boot ====================================
-
-let hiddenListingIds;
-
-chrome.storage.local.get(['hiddenListingIds'], (result) => {
-  hiddenListingIds = result.hiddenListingIds || {};
-  boot();
-  ListingShowPage.boot();
-});
