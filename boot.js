@@ -1,4 +1,4 @@
 IgnoredListings.load(() => {
-  boot();
+  SearchPage.boot();
   ListingShowPage.boot();
 });

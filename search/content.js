@@ -1,86 +1,90 @@
-// =================================== Functions ===============================
-function processListing(listing) {
-  // Skip if the listing was already processed
-  if (listing.querySelector('.hide-button')) return;
+const SearchPage = {
+  boot() {
+    document
+      .querySelectorAll('[itemprop="itemListElement"]')
+      .forEach(SearchPageListing.decorate);
 
-  hideOrShowListing(listing);
-  addButtons(listing);
-}
+    // Listen for new search results and decorate new listings
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach((element) => {
+          if (
+            element.getAttribute &&
+            element.getAttribute('itemprop') === 'itemListElement'
+          ) {
+            SearchPageListing.decorate(element);
+          }
+        });
+      }
+    });
 
-function hideOrShowListing(listing) {
-  const listingId = getListingIdFrom(listing);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  },
+};
 
-  if (IgnoredListings.includes(listingId)) {
-    listing.classList.add('hidden-listing');
+class SearchPageListing {
+  static decorate(listingElement) {
+    new SearchPageListing(listingElement).decorate();
   }
-}
 
-function addButtons(listing) {
-  const hideButton = document.createElement('button');
-  hideButton.textContent = 'Hide';
-  hideButton.classList.add('hide-button');
+  constructor(listingElement) {
+    this.listingElement = listingElement;
+    this.listingId = this.getListingId();
+  }
 
-  hideButton.addEventListener('click', () => {
-    hideListing(listing);
-  });
+  decorate() {
+    // Skip if the listing was already decorated
+    if (this.listingElement.querySelector('.hide-button')) return;
 
-  listing.appendChild(hideButton);
+    this.hideOrShowListing();
+    this.addButtons();
+  }
 
-  const showButton = document.createElement('button');
-  showButton.textContent = 'Show';
-  showButton.classList.add('show-button');
-
-  showButton.addEventListener('click', () => {
-    showListing(listing);
-  });
-
-  listing.appendChild(showButton);
-}
-
-function hideListing(listing) {
-  listing.classList.add('hidden-listing');
-
-  const listingId = getListingIdFrom(listing);
-
-  IgnoredListings.add(listingId);
-}
-
-function showListing(listing) {
-  listing.classList.remove('hidden-listing');
-
-  const listingId = getListingIdFrom(listing);
-
-  IgnoredListings.remove(listingId);
-}
-
-function getListingIdFrom(listing) {
-  const urlElement = listing.querySelector('[itemprop="url"]');
-  // the URL is like "www.airbnb.com/rooms/846234228646563727?adults..."
-  const url = urlElement.getAttribute('content');
-  return url.match(/\/rooms\/(\d+)/)?.[1];
-}
-
-function boot() {
-  document
-    .querySelectorAll('[itemprop="itemListElement"]')
-    .forEach(processListing);
-
-  // Listen for new search results and processes new listings
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      mutation.addedNodes.forEach((element) => {
-        if (
-          element.getAttribute &&
-          element.getAttribute('itemprop') === 'itemListElement'
-        ) {
-          processListing(element);
-        }
-      });
+  hideOrShowListing() {
+    if (IgnoredListings.includes(this.listingId)) {
+      this.listingElement.classList.add('hidden-listing');
     }
-  });
+  }
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
+  addButtons() {
+    const hideButton = document.createElement('button');
+    hideButton.textContent = 'Hide';
+    hideButton.classList.add('hide-button');
+
+    hideButton.addEventListener('click', () => {
+      this.hideListing();
+    });
+
+    this.listingElement.appendChild(hideButton);
+
+    const showButton = document.createElement('button');
+    showButton.textContent = 'Show';
+    showButton.classList.add('show-button');
+
+    showButton.addEventListener('click', () => {
+      this.showListing();
+    });
+
+    this.listingElement.appendChild(showButton);
+  }
+
+  hideListing() {
+    this.listingElement.classList.add('hidden-listing');
+    IgnoredListings.add(this.listingId);
+  }
+
+  showListing() {
+    this.listingElement.classList.remove('hidden-listing');
+    IgnoredListings.remove(this.listingId);
+  }
+
+  getListingId() {
+    const urlElement = this.listingElement.querySelector('[itemprop="url"]');
+    // the URL is like "www.airbnb.com/rooms/846234228646563727?adults..."
+    const url = urlElement.getAttribute('content');
+    return url.match(/\/rooms\/(\d+)/)?.[1];
+  }
 }
