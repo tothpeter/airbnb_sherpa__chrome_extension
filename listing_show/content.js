@@ -1,9 +1,30 @@
 class ListingShowPage {
+  static boot() {
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach((element) => {
+          // Ignore inserting the ignore container
+          if (element.nodeName !== 'SECTION') {
+            return;
+          }
+
+          ListingShowPage.decorate();
+        });
+      }
+    });
+
+    observer.observe(
+      document.querySelector('[data-section-id="TITLE_DEFAULT"]'),
+      {
+        childList: true,
+        subtree: true,
+      }
+    );
+  }
+
   static decorate() {
-    setTimeout(() => {
-      const listingShowPage = new ListingShowPage();
-      listingShowPage.decorate();
-    }, 2400);
+    const listingShowPage = new ListingShowPage();
+    listingShowPage.decorate();
   }
 
   constructor() {
@@ -78,5 +99,3 @@ class ListingShowPage {
     removeHiddenListingId(this.listingId);
   }
 }
-
-ListingShowPage.decorate();

@@ -102,4 +102,5 @@ let hiddenListingIds;
 chrome.storage.local.get(['hiddenListingIds'], (result) => {
   hiddenListingIds = result.hiddenListingIds || {};
   boot();
+  ListingShowPage.boot();
 });
