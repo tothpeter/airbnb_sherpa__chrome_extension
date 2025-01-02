@@ -15,7 +15,8 @@
         "*://*.airbnb.*/*"
       ],
       "js": [
-        "search/content.js"
+        "search/content.js",
+        "listing_show/content.js"
       ],
       "css": [
         "search/styles.css"

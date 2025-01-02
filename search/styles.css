@@ -1,5 +1,5 @@
 .show-button {
-  display: none;
+  display: none !important;
 }
 
 [itemprop='itemListElement'] > div:first-of-type {
@@ -19,9 +19,9 @@
 }
 
 .hidden-listing .show-button {
-  display: block;
+  display: block !important;
 }
 
 .hidden-listing .hide-button {
-  display: none;
+  display: none !important;
 }
