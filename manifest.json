@@ -15,13 +15,13 @@
         "*://*.airbnb.*/*"
       ],
       "js": [
-        "store/ignored_listings.js",
-        "search/content.js",
-        "listing_show/content.js",
+        "lib/store/ignored_listings.js",
+        "lib/search_page.js",
+        "lib/listing_page.js",
         "boot.js"
       ],
       "css": [
-        "search/styles.css"
+        "css/search_page.css"
       ]
     }
   ]
