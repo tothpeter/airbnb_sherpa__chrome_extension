@@ -1,5 +1,8 @@
 class ListingShowPage {
   static boot() {
+    // Skip if we are not on a listing show page
+    if (!window.location.href.includes('/rooms/')) return;
+
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         mutation.addedNodes.forEach((element) => {
